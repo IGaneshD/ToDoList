@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding</title>
+    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+</head>
+<body>
+    <main class="onboard">
+        <h1 class="HeroMsg">Your Account Has been Created Successfully</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="input-box">
+
+                <p style='font-weight:500'>Please Provide Some Additional Info</p>
+            </div>
+            {% for field in form%}
+                <div class="input-box">
+                    <label for="id_{{field.name}}">{{field.label}}</label>
+                    {{field}}
+                </div>
+            {% endfor %}
+            <button class="btn">Submit</button>
+        </form>
+        <div class="form-extra">
+            <a href="{% url 'taskboard' %}" class="btn">Skip & Go To Dashboard</a>
+        </div>
+    </main>
+</body>
+</html>

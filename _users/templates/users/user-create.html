@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign UP</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+</head>
+<body>
+    
+    <main>
+        <h1>Create your account</h1>
+        <form action="" method="post">
+            {% for msg in messages %}
+                {{msg}}
+            {% endfor %}
+            {% csrf_token %}
+            {% comment %} <div class="input-box">
+                <label for="">Email Address<span class="required-field">*</span></label>
+                <input type="email" name="" id="" placeholder="Enter your email">
+            </div>
+            <div class="input-box">
+                <label for="">Username<span class="required-field">*</span></label>
+                <input type="text" name="" id="" placeholder="Enter your username">
+            </div>
+            <div class="input-box">
+                <label for="id_{{field.name}}">{{field.label}}<span class="required-field">*</span></label>
+                <input type="password" name="" id="" placeholder="Enter your password">
+            </div> {% endcomment %}
+            {% comment %} <div class="input-box">
+                <label for="">Password Confirmation<span class="required-field">*</span></label>
+                <input type="password" name="" id="" placeholder="confirm your password again">
+            </div> {% endcomment %}
+
+             {% for field in form %}
+            <div class="input-box">
+                <label for="id_{{field.name}}">{{field.label}}<span class="required-field">*</span></label>
+                {{field}}
+                
+                {% for error in field.errors %}
+                <p class="field-error">{{error}}</p>
+        {% endfor %}
+            </div>
+            {% endfor %} 
+
+            
+    
+            <div class="input-box">
+    
+                <button type="submit" class="btn">
+                    Sign Up
+                </button>
+            </div>
+        </form>
+        <div class="form-extra">
+            <p>Already have an Account? <a href="{% url 'signin' %}">Sign In now</a>
+        </div>
+    </main>
+    
+    
+
+</body>
+</html>

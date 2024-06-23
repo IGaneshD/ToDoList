@@ -1,0 +1,10 @@
+
+    {% for field in updateForm %}
+            <div class="input-box">
+                <label for="id_{{field.name}}">{{field.label}}</label>
+                {{field}}
+            </div>
+    {% endfor %}
+
+<button class="btn" type="submit">Update Task</button>
+

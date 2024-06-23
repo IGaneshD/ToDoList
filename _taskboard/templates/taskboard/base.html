@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ganesh's Board</title>
+    <link rel="stylesheet" href="{% static 'css/header.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/taskboard.css' %}"/>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href="">Account</a>
+        <a href="{% url 'signout' %}">Sign Out</a>
+        <img src="" alt="">
+      </nav>
+    </header>
+    {% block content %}
+
+    {% endblock content %}
+  </body>
+</html>

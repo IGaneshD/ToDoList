@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+</head>
+<body class="body-welcomePage">
+
+    <main>
+        <h1>Plan Your Tasks!</h1>
+    
+        <div class="userBtn">
+            <a href="{% url 'signup' %}">Get Started</a>
+            <a href="{% url 'signin' %}">Sign In</a>
+        </div>
+
+    </main>
+
+    <footer>
+        <a href="https://github.com/IGaneshD">
+            <ion-icon name="logo-github"></ion-icon>
+        </a>
+        <a href="https://www.linkedin.com/in/ganesha-deshmukh/">
+            <ion-icon name="logo-linkedin"></ion-icon>
+        </a>
+        <h5>Created with ❤️ by Ganesh</h5>
+    </footer>
+
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:Poppins, sans-serif;
+    }
+    .body-welcomePage{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height:100vh;
+        width: 100%;
+        color:rgb(0,0,0);
+
+        background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(247, 247, 247)
+    )
+    rgb(253, 253, 253);
+
+    {% comment %} background-image: url({% static 'img/bg/bg3.jpg'%});
+    background-size: cover;
+    background-blend-mode: color-burn;
+    background-position: right; {% endcomment %}
+        
+    }
+
+    main{
+        width: 100%;
+        position: relative;
+        display: flex;
+        flex-direction:column;
+        align-items: center;
+    }
+
+    main h1{
+        font-size:4rem;
+        color:#0a0a0a;
+        text-align:center;
+        letter-spacing:1px;
+    }
+
+    .userBtn{
+        position: relative;
+        margin:100px 0 50px 0;
+    }
+
+    .userBtn a{
+        height:48px;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px 30px;
+  margin: 10px;
+  border: none;
+  font-weight: 500;
+  background-color: hsla( 0,0%,9% ,1);
+  color: white;
+  cursor: pointer;
+  text-decoration:none;
+  box-shadow:0px 0px 5px #a2a2a2;
+    }
+    .userBtn a:nth-child(2){
+        color: #000;
+    background: #f7f7f7;
+    box-shadow: none;
+    border: 1px solid #000;
+    transition: background .5s, color .5s;
+    }
+
+    .userBtn a:nth-child(2):hover{
+        background:hsla( 0,0%,9% ,1);
+        color:#fff;
+    }
+
+    footer {
+        width: 100%;
+        position: absolute;
+        bottom: 20px;
+        text-align: center;
+      }
+      footer a {
+        text-decoration: none;
+        color: #000;
+        font-size:30px
+      }
+
+</style>
+</html>

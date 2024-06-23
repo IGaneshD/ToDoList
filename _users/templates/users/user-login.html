@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/users.css' %}">
+</head>
+<body>
+    <main>
+        <h1>Sign in to TobeDone</h1>
+        <form action="{% url 'signin' %}" method="post">
+            {% csrf_token %}
+
+            {% for msg in messages %}
+            <p class="form-messages">
+                {{msg}}
+            </p>
+            {% endfor %}
+
+            {% comment %} <div class="input-box">
+                <label for="login-username">Username or email address</label>
+                <input type="text" name="username" id="login-username">
+            </div>
+
+            <div class="input-box">
+                <label for="login-password">Password</label>
+                <input type="password" name="password" id="login-password">
+            </div> {% endcomment %}
+            
+            {% for field in form %}
+            <div class="input-box">
+                <label for="id_{{field.name}}">{{field.label}}</label>
+                {{field}}
+            </div>
+            {% endfor %}
+            
+            <div class="input-box">
+
+                <button type="submit" class="btn">
+                    Sign In
+                </button>
+            </div>
+        </form>
+        <div class="form-extra">
+            <p>New to TobeDone? <a href="{% url 'signup' %}">Create an account</a>
+        </div>
+    </main>
+</body>
+</html>

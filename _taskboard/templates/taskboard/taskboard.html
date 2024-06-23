@@ -1,0 +1,79 @@
+{% extends 'taskboard/base.html'%}
+{% block  content %}
+{% load static %}
+
+<main>
+    <div class="task-actions">
+        <div class="create-task">
+            <form action="{% url 'create-task' %}" method="post" id="createTaskForm">
+                {% csrf_token %}
+                {% for field in createTaskForm %}
+                <div class="input-box">
+                    <label for="id_{{field.name}}">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <button class="btn" type="submit"> + Create Task</button>
+            </form> 
+        </div>
+
+        <div class="task-operations-secondary">
+            <form action="" method="post" id="taskForm-secondary">
+                {% csrf_token %}
+
+            
+            </form>
+        </div>
+        
+            
+    </div>
+
+    {% comment %} display Tasks {% endcomment %}
+    <div class="displayTasks">
+        <h1>Today's Task</h1>
+
+            {% for task in myTasks  %}
+                <div class="taskRow">
+                    <div class="task-box">
+                    
+                    <p class="task-status">
+                        <img src="{% static 'img/icons/unchecked.png' %}">
+                    </p>
+                    <p class="task-title" data-id={{task.task_id}}>{{task.title|truncatechars:30}}</p>
+                    <p class="due_date">{{task.due_date}}</p>
+                    {% comment %} <p>{{task.status}}</p> {% endcomment %}
+                    
+                    
+                    <p class="edit-task-button" data-task_id = "{{task.task_id}}">
+                            <img src="{% static 'img/icons/edit-button.png' %}">
+                    </p>
+
+                    {% comment %} <p id="edit-task-{{task.task_id}}">
+                        <a href="{% url 'update-task' task.task_id %}">
+                            <img src="{% static 'img/icons/edit-button.png' %}"></a></p> {% endcomment %}
+
+                    <p class="delete-task-button" data-task_id= "{{task.task_id}}">
+                        <img src="{% static 'img/icons/recycle-bin.png' %}">
+                    </p>
+                    </div>
+                    <div class="delete-task-confirm hidden">
+                        <form action="{% url 'delete-task' task.task_id %}" method="post">
+                            {% csrf_token %}
+                            <button class='btn' type="submit">Confirm</button>
+                        </form>
+                        <a class='btn btn-cancel'>Cancel</a>
+                    </div>
+
+
+                </div>
+            
+            {% endfor %}
+        </table>
+
+    </div>
+
+    
+</main>
+<script src="{% static 'js/taskboard.js' %}"></script>
+
+{% endblock content %}
