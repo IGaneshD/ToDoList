@@ -1,19 +1,47 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.http import JsonResponse
 from .forms import taskCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Task
-import json
 from django.template.loader import render_to_string
-# from django.core.serializers import serialize
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 # Create your views here.
 @login_required(login_url='signin')
 def taskboard(request):
     tasks = Task.objects.filter(user = request.user)
-    createTaskForm = taskCreationForm()
-    updateTaskForms = {str(task.task_id):taskCreationForm(instance=task) for task in tasks}
-    context = {'myTasks':tasks, 'createTaskForm':createTaskForm, 'updateTaskForms':updateTaskForms}
+
+    paginator = Paginator(tasks, 5)
+    page = request.GET.get('page')
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        tasks = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        tasks = paginator.page(page)
+    
+    custom_range = paginator.page_range
+
+    if paginator.num_pages>=5:
+        leftIndex = int(page) - 2
+        rightIndex = int(page) + 2
+        if leftIndex < 1:
+            rightIndex = rightIndex - leftIndex + 1
+            leftIndex = 1  
+        # if int(page)==paginator.num_pages:
+        #     leftIndex = paginator.num_pages - 4
+        #     rightIndex = paginator.num_pages
+
+        if rightIndex>paginator.num_pages:
+            leftIndex = leftIndex - (2 - (paginator.num_pages - int(page)) )
+            rightIndex = paginator.num_pages
+    
+        custom_range = range(leftIndex, rightIndex+1)
+
+    form = taskCreationForm(user=request.user)
+    context = {'myTasks':tasks, 'page_range':custom_range, 'createTaskForm':form}
 
     return render(request, 'taskboard/taskboard.html', context)
 
@@ -22,18 +50,19 @@ def taskboard(request):
 @login_required(login_url='signin')
 def create_task(request):
     if request.method == 'POST':
-        form = taskCreationForm(request.POST)
+        form = taskCreationForm(request.POST, user=request.user)
         if form.is_valid():
             task = form.save(commit=False)
             task.user = request.user
             task.save()
 
             return redirect('taskboard')
+        
 
 @login_required(login_url='signin')
 def update_task(request, pk):
     task = Task.objects.get(task_id = pk)
-    form = taskCreationForm(instance=task)
+    form = taskCreationForm(instance=task, user=request.user)
 
     if request.method == 'POST':
         form = taskCreationForm(request.POST, instance=task)

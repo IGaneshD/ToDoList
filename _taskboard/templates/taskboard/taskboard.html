@@ -3,6 +3,7 @@
 {% load static %}
 
 <main>
+    {% include "taskboard/sidebar.html" %}
     <div class="task-actions">
         <div class="create-task">
             <form action="{% url 'create-task' %}" method="post" id="createTaskForm">
@@ -39,7 +40,7 @@
                     <p class="task-status">
                         <img src="{% static 'img/icons/unchecked.png' %}">
                     </p>
-                    <p class="task-title" data-id={{task.task_id}}>{{task.title|truncatechars:30}}</p>
+                    <p class="task-title" data-id={{task.task_id}}>{{task.title|truncatechars:50}}</p>
                     <p class="due_date">{{task.due_date}}</p>
                     {% comment %} <p>{{task.status}}</p> {% endcomment %}
                     
@@ -63,13 +64,10 @@
                         </form>
                         <a class='btn btn-cancel'>Cancel</a>
                     </div>
-
-
-                </div>
-            
+                </div>           
             {% endfor %}
-        </table>
-
+            {% include "pagination.html" with queryset=myTasks no_of_pages=page_range %}
+            
     </div>
 
     

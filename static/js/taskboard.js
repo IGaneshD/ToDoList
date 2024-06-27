@@ -1,5 +1,11 @@
 "use strict";
 
+// Set due date minimum
+let isoStringArray = new Date().toISOString().split(':')
+let isoString = isoStringArray[0] + ':' + isoStringArray[1]
+
+document.querySelector('#id_due_date').min = isoString
+
 
 let editTaskButtons = document.querySelectorAll('.edit-task-button')
 let taskForm_secondary = document.querySelector('#taskForm-secondary')

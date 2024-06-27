@@ -1,0 +1,11 @@
+<div class="paginator">
+    {% for page_no in no_of_pages %}
+
+    {% if queryset.number == page_no %}
+    <a href="?page={{page_no}}" class="active">{{page_no}}</a>
+    {% else %}
+    <a href="?page={{page_no}}">{{page_no}}</a>
+    {% endif %}
+
+    {% endfor %}
+</div>
