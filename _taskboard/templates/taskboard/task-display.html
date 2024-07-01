@@ -1,0 +1,50 @@
+{% load static %}
+{% if display_title == ''%}
+<h1>Today's Task</h1>
+{% else %}
+<h1>{{display_title}} Tasks</h1>
+{% endif %}
+
+            {% for task in myTasks  %}
+                <div class="taskRow">
+                    <div class="task-box">
+
+                    {% if task.status == 'COMPLETED' %}
+                    
+                    <p class="task-status completed" data-task_id="{{task.task_id}}">
+                        <img src="{% static 'img/icons/checked.png' %}">
+                    </p>
+                    {% else %}
+
+                    <p class="task-status" data-task_id="{{task.task_id}}">
+                        <img src="{% static 'img/icons/unchecked.png' %}">
+                    </p>
+                    {% endif %}
+
+                    <p class="task-title" data-id={{task.task_id}}>{{task.title|truncatechars:50}}</p>
+                    <p class="due_date">{{task.due_date}}</p>
+                    {% comment %} <p>{{task.status}}</p> {% endcomment %}
+                    
+                    
+                    <p class="edit-task-button" data-task_id = "{{task.task_id}}">
+                            <img src="{% static 'img/icons/edit-button.png' %}">
+                    </p>
+
+                    {% comment %} <p id="edit-task-{{task.task_id}}">
+                        <a href="{% url 'update-task' task.task_id %}">
+                            <img src="{% static 'img/icons/edit-button.png' %}"></a></p> {% endcomment %}
+
+                    <p class="delete-task-button" data-task_id= "{{task.task_id}}">
+                        <img src="{% static 'img/icons/recycle-bin.png' %}">
+                    </p>
+                    </div>
+                    <div class="delete-task-confirm hidden">
+                        <form action="{% url 'delete-task' task.task_id %}" method="post">
+                            {% csrf_token %}
+                            <button class='btn' type="submit">Confirm</button>
+                        </form>
+                        <a class='btn btn-cancel'>Cancel</a>
+                    </div>
+                </div>           
+            {% endfor %}
+            {% include "pagination.html" with queryset=myTasks no_of_pages=page_range type='task' %}

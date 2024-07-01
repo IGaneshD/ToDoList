@@ -1,11 +1,46 @@
-<div class='sidebar'>
-    <div>
-        <a href="#"> <i class="fa-solid fa-sun"></i> My Day</a>
-        <a href="#" class="active"> <i class="fa-regular fa-star"></i> Important</a>
+{% load static %}
+<div class="sidebar">
+  <div class="section">
+    <button class="active sidebarLink">
+      <i class="fa-solid fa-sun"></i> My Day
+    </button>
+    <button class="sidebarLink" data-query="important">
+      <i class="fa-regular fa-star"></i> Important
+    </button>
+    <button class="sidebarLink" data-query="overdue">Over Due</button>
+    <button class="sidebarLink" data-query="completed">Completed</button>
+    <button class="sidebarLink" data-query="all">All Tasks</button>
+  </div>
+
+  <!--Section 2 Starts -->
+  <div class="section">
+    {% if no_of_categories < 10 %}
+    <button class="btn add-category" style="color: #fff; padding: 10px; background: #000; visibility:visible;">
+      + Add Category
+    </button>
+    {% else %}
+    <button class="btn add-category" style="color: #fff; padding: 10px; background: #000;" disabled>
+      + Add Category
+    </button>
+
+    {% endif %}
+
+    <div class="categories_display">
+      {% for category in categories %}
+
+      <button class="sidebarLink-category">
+
+        <div class="category-name">
+          <p style="flex: 1" data-query="category_{{category}}">{{category}}</p>
+          <img src="{% static 'img/icons/recycle-bin.png' %}" data-id="{{category.id}}"/>
+        </div>
+
+       
+      </button>
+
+      {% endfor %}
+
+      {% include "pagination.html" with queryset=categories no_of_pages=category_range type='category' %}
     </div>
-<div>
-    <a href="#">My Day</a>
-    <a href="#">My Day</a>
-    <a href="#">My Day</a>
-</div>
+  </div>
 </div>

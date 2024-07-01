@@ -9,12 +9,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class Task(models.Model):
     STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed')
+        ('COMPLETED', 'Completed'),
+        ('PENDING', 'Pending')
     ]
     IMPORTANT_CHOICES = [
         ('No', 'No'),
@@ -25,7 +25,7 @@ class Task(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name="task's Title")
     description = models.TextField(max_length=200, blank=True, null=True, verbose_name="task's Description")
     important = models.CharField(max_length=10, choices=IMPORTANT_CHOICES, default='No')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category", blank=True, default=None, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", blank=True, default=None, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
     due_date = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,4 +39,4 @@ class Task(models.Model):
     
     class Meta:
 
-        ordering = ['due_date', 'title']
+        ordering = ['-important', 'due_date', '-status']

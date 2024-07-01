@@ -1,0 +1,17 @@
+{% load static %}
+
+{% for category in categories %}
+
+      <button class="sidebarLink-category">
+
+        <div class="category-name">
+          <p style="flex: 1" data-query="category_{{category}}">{{category}}</p>
+          <img src="{% static 'img/icons/recycle-bin.png' %}" data-id="{{category.id}}"/>
+        </div>
+
+        
+      </button>
+
+      {% endfor %}
+
+      {% include "pagination.html" with queryset=categories no_of_pages=category_range type='category' %}

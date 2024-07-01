@@ -1,11 +1,13 @@
+{% if queryset.has_other_pages %}
 <div class="paginator">
     {% for page_no in no_of_pages %}
 
     {% if queryset.number == page_no %}
-    <a href="?page={{page_no}}" class="active">{{page_no}}</a>
+    <button data-page="{{page_no}}" data-type="{{type}}" class="btn active">{{page_no}}</button>
     {% else %}
-    <a href="?page={{page_no}}">{{page_no}}</a>
+    <button data-page="{{page_no}}" data-type="{{type}}" class="btn">{{page_no}}</button>
     {% endif %}
 
     {% endfor %}
 </div>
+{% endif %}
