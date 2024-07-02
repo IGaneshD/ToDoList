@@ -1,7 +1,19 @@
 {% load static %}
 
-{% for category in categories %}
+{% if no_of_categories < 5 %}
+    <button class="btn add-category" style="color: #fff; padding: 10px; background: #000; visibility:visible;">
+      + Add Category
+    </button>
+    {% else %}
+    <button class="btn add-category" style="color: #fff; padding: 10px; background: #000;" disabled>
+      + Add Category
+    </button>
 
+    {% endif %}
+
+    <div class="categories_display">
+      {% for category in  categories %}
+      
       <button class="sidebarLink-category">
 
         <div class="category-name">
@@ -9,9 +21,7 @@
           <img src="{% static 'img/icons/recycle-bin.png' %}" data-id="{{category.id}}"/>
         </div>
 
-        
+       
       </button>
 
       {% endfor %}
-
-      {% include "pagination.html" with queryset=categories no_of_pages=category_range type='category' %}

@@ -2,10 +2,10 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
-/* body{
+body{
   overflow: hidden;
   max-height: 100vh;
-} */
+}
 
 
 main {
@@ -20,7 +20,7 @@ main {
 .sidebar {
   width: 20%;
   padding: 0px 25px;
-  max-height: 75vh;
+  max-height: 85vh;
   overflow: hidden;
 }
 .sidebar .section {
@@ -94,6 +94,15 @@ main {
 .task-operations-secondary, .task-actions .create-cat {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.task-operations-secondary{
+  display:none;
+}
+.create-cat form a, .task-operations-secondary a{
+padding: 10px 20px;
+color: red;
 }
 
 .task-actions .create-cat{
@@ -107,6 +116,7 @@ main {
   align-items: center;
   width: 90%;
 }
+
 .task-actions form .input-box {
   margin: 10px 10px;
   display: flex;

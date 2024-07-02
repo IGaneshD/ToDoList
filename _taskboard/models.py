@@ -5,11 +5,11 @@ import uuid
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=255,blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True, related_name='category')
 
     def __str__(self):
         return self.name
-    
+        
 
 class Task(models.Model):
     STATUS_CHOICES = [

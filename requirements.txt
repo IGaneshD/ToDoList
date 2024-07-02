@@ -1,0 +1,16 @@
+asgiref==3.8.1
+Django==5.0.6
+django-cors-headers==4.4.0
+django-countries==7.6.1
+django-livereload-server==0.5.1
+django-storages==1.14.3
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+psycopg==3.2.1
+PyJWT==2.8.0
+python-dotenv==1.0.1
+pyuca==1.2
+sqlparse==0.5.0
+tornado==6.4.1
+typing_extensions==4.12.2
+tzdata==2024.1

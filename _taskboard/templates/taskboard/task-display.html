@@ -1,6 +1,8 @@
 {% load static %}
 {% if display_title == ''%}
 <h1>Today's Task</h1>
+{% elif display_title == 'Over Due' %}
+<h1 style="color:#f00">{{display_title}} Tasks</h1>
 {% else %}
 <h1>{{display_title}} Tasks</h1>
 {% endif %}

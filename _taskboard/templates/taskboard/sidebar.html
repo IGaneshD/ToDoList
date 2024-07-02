@@ -14,7 +14,7 @@
 
   <!--Section 2 Starts -->
   <div class="section">
-    {% if no_of_categories < 10 %}
+    {% if no_of_categories < 5 %}
     <button class="btn add-category" style="color: #fff; padding: 10px; background: #000; visibility:visible;">
       + Add Category
     </button>
@@ -26,8 +26,8 @@
     {% endif %}
 
     <div class="categories_display">
-      {% for category in categories %}
-
+      {% for category in  categories %}
+      
       <button class="sidebarLink-category">
 
         <div class="category-name">
@@ -39,8 +39,6 @@
       </button>
 
       {% endfor %}
-
-      {% include "pagination.html" with queryset=categories no_of_pages=category_range type='category' %}
     </div>
   </div>
 </div>

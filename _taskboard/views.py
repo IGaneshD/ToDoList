@@ -7,21 +7,21 @@ from .utils import paginate
 from django.utils import timezone
 from django.http import JsonResponse
 import json
+from django.contrib.auth.models import User
 
 
 # Create your views here.
 @login_required(login_url='signin')
 def taskboard(request):
+    user = request.user
     today = timezone.now().date()
     taskList = Task.objects.filter(user = request.user, due_date__date=today)
-    print(taskList.count())
-    category_list = Category.objects.filter(user=request.user)
-    no_of_categories = category_list.count()
+    categories = Category.objects.filter(user=request.user)
+    num_categories = len(categories)
     
     tasks, custom_range = paginate(request, taskList)
-    categories, category_range = paginate(request, category_list)
-    form = TaskCreationForm(user=request.user)
-    context = {'myTasks':tasks, 'page_range':custom_range, 'createTaskForm':form, 'categories':categories, 'category_range':category_range, 'no_of_categories':no_of_categories }
+    form = TaskCreationForm()
+    context = {'myTasks':tasks, 'page_range':custom_range, 'createTaskForm':form, 'categories':categories, 'no_of_categories':num_categories}
 
     return render(request, 'taskboard/taskboard.html', context)
 
@@ -50,11 +50,11 @@ def getTasks(request):
     elif category:
         display_title = category
         taskList = Task.objects.filter(user=request.user, category__name=category)
-        print(taskList)
+        
     else:
         today = timezone.now().date()
         display_title = ''
-        taskList = Task.objects.filter(user = request.user)
+        taskList = Task.objects.filter(user = request.user, due_date__date=today)
     
     
     tasks, custom_range = paginate(request, taskList)
@@ -72,9 +72,14 @@ def getTasks(request):
 def updateTaskStatus(request):
     data = json.loads(request.body)
     task_id = data['task_id']
+    taskStatus = data['status']
+    print(taskStatus)
     task = Task.objects.get(task_id = task_id)
     if request.method == 'POST':
-        task.status = 'COMPLETED'
+        if taskStatus=='PENDING':
+            task.status = 'COMPLETED'
+        else:
+            task.status = 'PENDING'
         task.save()
     
     return JsonResponse({'completed':True}, safe=False)
@@ -91,18 +96,7 @@ def creatCategory(request):
         
     return redirect('taskboard')
 
-@login_required(login_url='signin')
-def getCategories(request):
-    category_list = Category.objects.filter(user=request.user)
-    
-    categories, custome_range = paginate(request, category_list)
-    context = {
-        'categories':categories,
-        'category_range':custome_range,
-    }
-    
-    html = render_to_string('taskboard/categories.html', context=context, request=request)
-    return HttpResponse(html)
+
 
 @login_required(login_url='signin')
 def create_task(request):
@@ -153,16 +147,7 @@ def deleteCategory(request):
     
     if request.method=='POST':
         category.delete()
-        
-    category_list = Category.objects.filter(user=request.user)
     
-    categories, custome_range = paginate(request, category_list)
-    context = {
-        'categories':categories,
-        'category_range':custome_range,
-    }
-    
-    html = render_to_string('taskboard/categories.html', context=context)
-    return HttpResponse(html)
+    return JsonResponse({'status':'deleted'}, safe=False)
     
     

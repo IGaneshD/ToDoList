@@ -16,7 +16,7 @@ let taskList = document.querySelector('.displayTasks')
 let sidebar_links = document.querySelectorAll('.sidebar .sidebarLink')
 let sidebar_categories = document.querySelectorAll('.sidebar button.sidebarLink-category p')
 let deleteCategory = document.querySelectorAll('.category-name img')
-let categories_display = document.querySelector('.categories_display')
+let categories_display = document.querySelectorAll('.sidebar .section')[1]
 let create_categories = document.querySelector('.create-cat')
 let taskStatus = document.querySelectorAll('.task-status')
 
@@ -25,6 +25,7 @@ deleteTaskEventListener()
 editTaskEventListener()
 deleteCategoryEventListener()
 sidebar_categoriesEventListener()
+addCategoryEventListener()
 
 function updateDOMVariables() {
     paginateBtns = document.querySelectorAll('.paginator button')
@@ -37,7 +38,7 @@ function updateDOMVariables() {
     sidebar_links = document.querySelectorAll('.sidebar .sidebarLink')
     sidebar_categories = document.querySelectorAll('.sidebar button.sidebarLink-category p')
     deleteCategory = document.querySelectorAll('.category-name img')
-    categories_display = document.querySelector('.categories_display')
+    categories_display = document.querySelectorAll('.sidebar .section')[1]
     create_categories = document.querySelector('.create-cat')
     taskStatus = document.querySelectorAll('.task-status')
 
@@ -47,6 +48,7 @@ function updateDOMVariables() {
     deleteCategoryEventListener()
     sidebar_categoriesEventListener()
     taskStatusEventListener()
+    addCategoryEventListener()
 }
 
 
@@ -89,11 +91,12 @@ function delCategory(category_id) {
         },
         mode: 'same-origin',
         body: JSON.stringify({ 'category_id': `${category_id}` })
-    })
-        .then(response => response.text())
-        .then(html => {
-            categories_display.innerHTML = html
-            updateDOMVariables()
+    }).then(response => response.json())
+        .then(result => {
+            if(result['status']=='deleted'){
+
+                window.location.reload()
+            }
         })
 
 }
@@ -219,6 +222,8 @@ function editTaskEventListener() {
             console.log('clicked editbtn')
             let task_id = this.dataset.task_id
             createTaskForm.style.display = 'none';
+            document.querySelector('.task-operations-secondary').style.display= 'flex';
+            create_categories.style.display = 'none'
             fetchUpdateForm(task_id)
         })
     })
@@ -253,12 +258,37 @@ function fetchUpdateForm(task_id) {
         })
 }
 
+function addCategoryEventListener(){
 
 document.querySelector('.add-category').addEventListener('click', function () {
     taskForm_secondary.style.display = 'none'
     document.querySelector('.create-task').style.display = 'none'
+    document.querySelector('.task-operations-secondary').style.display= 'none'
     document.querySelector('.create-cat').style.display = 'flex'
 })
+}
+
+function statusUpdate(task_id, currentStatus){
+    let url = '/update-status/'
+
+    const request = new Request(url, {
+        'method':'POST',
+        headers:{
+            'X-CSRFToken':csrftoken,
+        },
+        mode:'same-origin',
+        body:JSON.stringify({'task_id':task_id, 'status':currentStatus})
+    })
+    
+    fetch(request)
+    .then(response => response.json())
+    .then(result => {
+        if(result){
+            console.log(result)
+            updateDOMVariables()
+        }
+    })
+}
 
 
 function taskStatusEventListener(){
@@ -267,25 +297,18 @@ function taskStatusEventListener(){
         task.addEventListener('click', function (){
             let task_id = this.dataset.task_id
             console.log(task_id)
-    
-            let url = '/update-status/'
-            const request = new Request(url, {
-                'method':'POST',
-                headers:{
-                    'X-CSRFToken':csrftoken,
-                },
-                mode:'same-origin',
-                body:JSON.stringify({'task_id':task_id})
-            })
+            let currentStatus;
+
             
-            fetch(request)
-            .then(response => response.json())
-            .then(result => {
-                if(result){
-                    console.log(result)
-                    updateDOMVariables()
-                }
-            })
+            if(this.classList.contains('completed')){
+                currentStatus = 'COMPLETED'
+                statusUpdate(task_id, currentStatus)
+            }
+            else{
+                currentStatus = 'PENDING'
+                statusUpdate(task_id, currentStatus)
+            }
+            
         })
     })
 }

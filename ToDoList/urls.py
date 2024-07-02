@@ -29,5 +29,6 @@ urlpatterns = [
     path('', views.index, name="welcome_page" ),
     path('',include('_taskboard.urls')),
     path('',include('_users.urls')),
-    path('logout/', signout)
+    path('logout/', signout),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
